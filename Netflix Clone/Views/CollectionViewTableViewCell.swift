@@ -2,14 +2,20 @@
 //  CollectionViewTableViewCell.swift
 //  Netflix Clone
 //
-//  Created by AcxGautamM2Pro on 10/05/24.
+//  Created by SaurabhJaiswal on 10/05/24.
 //
 
 import UIKit
 
+protocol CollectionViewTableViewCellDelegate: AnyObject {
+    func CollectionViewTableViewCellDidTapCell(_ cell: CollectionViewTableViewCell, viewModel: TitlePreviewViewModel)
+}
+
 class CollectionViewTableViewCell: UITableViewCell {
     
     static let identifier = "CollectionViewTableCell"
+    
+    weak var delegate: CollectionViewTableViewCellDelegate?
     
     private var titles: [Title] = [Title]()
     
@@ -74,10 +80,20 @@ extension CollectionViewTableViewCell: UICollectionViewDelegate, UICollectionVie
             return
         }
         
-        APICaller.shared.getMovie(with: titleName + " trailer") { result in
+        APICaller.shared.getMovie(with: titleName + " trailer") { [weak self] result in
             switch result {
             case .success(let YoutubeSearchItem):
-                print(YoutubeSearchItem.id)
+                
+                let title = self?.titles[indexPath.row]
+                guard let titleOverview = title?.overview else {
+                    return
+                }
+                guard let StrongSelf = self else {
+                    return
+                }
+                let viewModel = TitlePreviewViewModel(title: titleName, youtubeView: YoutubeSearchItem, titleOverview: titleOverview)
+                self?.delegate?.CollectionViewTableViewCellDidTapCell(StrongSelf, viewModel: viewModel)
+                
             case .failure(let error):
                 print(error.localizedDescription)
             }

@@ -2,7 +2,7 @@
 //  SearchResultViewController.swift
 //  Netflix Clone
 //
-//  Created by AcxGautamM2Pro on 13/05/24.
+//  Created by SaurabhJaiswal on 13/05/24.
 //
 
 import UIKit
