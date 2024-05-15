@@ -57,17 +57,29 @@ class HomeViewController: UIViewController {
         }
     }
     
-    private func configureNavBar(){
-        var image = UIImage(named: "netflixLogo")
-        image = image?.withRenderingMode(.alwaysOriginal)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: image, style: .done, target: self, action: nil)
+    private func configureNavBar() {
+        // Create a UIView to hold the image
+        let logoContainer = UIView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+        
+        // Create the UIImageView with the image
+        let logoImageView = UIImageView(image: UIImage(named: "netflixLogo"))
+        logoImageView.contentMode = .scaleAspectFit
+        logoImageView.frame = CGRect(x: 0, y: 0, width: 50, height: 40)
+        
+        // Add the UIImageView to the UIView
+        logoContainer.addSubview(logoImageView)
+        
+        // Set the UIView as the custom view for the left bar button item
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: logoContainer)
+        
         navigationItem.rightBarButtonItems = [
             UIBarButtonItem(image: UIImage(systemName: "person"), style: .done, target: self, action: nil),
             UIBarButtonItem(image: UIImage(systemName: "play.rectangle"), style: .done, target: self, action: nil)
-            
         ]
+        
         navigationController?.navigationBar.tintColor = .white
     }
+
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
